@@ -40,7 +40,11 @@ class MainWindow(QMainWindow):
         self.ui.increaseHour.clicked.connect(self.increase_hour)
         self.ui.increaseMin.clicked.connect(self.increase_min)
         self.ui.increaseSec.clicked.connect(self.increase_sec)
-        self.ui.timer_button.clicked.connect(self.update_countdown)
+        self.ui.decreaseHour.clicked.connect(self.decrease_hour)
+        self.ui.decreaseMin.clicked.connect(self.decrease_min)
+        self.ui.decreaseSec.clicked.connect(self.decrease_sec)
+        self.ui.startButton.clicked.connect(self.update_countdown)
+        self.ui.stopButton.clicked.connect(lambda: self.countdown_timer.stop())
 
         #Initialize a timer. It will take an amount of time to wait for,  as input from user.
         self.countdown_timer = QTimer()
@@ -61,16 +65,58 @@ class MainWindow(QMainWindow):
 
     def increase_hour(self):
         self.hour += 1
+        if self.hour > 23:
+            self.hour = 0
+        self.countdown_timer.stop()
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
     def increase_min(self):
         self.min += 1
+        if self.min > 59:
+            self.min = 0
+            self.hour += 1
+            if self.hour > 23:
+                self.hour = 23
+        self.countdown_timer.stop()
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
     def increase_sec(self):
         self.sec += 1
+        if self.sec > 59:
+            self.sec = 0
+            self.min += 1
+            if self.min > 59:
+                self.min = 0
+        self.countdown_timer.stop()
+        formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
+        self.ui.timer_time.display(formatted_time)
+    
+    def decrease_hour(self):
+        self.hour -= 1
+        if self.hour < 0:
+            self.hour = 23
+        self.countdown_timer.stop()
+        formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
+        self.ui.timer_time.display(formatted_time)
+
+    def decrease_min(self):
+        self.min -= 1
+        if self.min < 0:
+            self.min = 59
+            self.hour -= 1
+            if self.hour < 0:
+                self.hour = 23
+        self.countdown_timer.stop()
+        formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
+        self.ui.timer_time.display(formatted_time)
+
+    def decrease_sec(self):
+        self.sec -= 1
+        if self.sec < 0:
+            self.sec = 59
+        self.countdown_timer.stop()
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 

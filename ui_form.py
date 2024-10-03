@@ -117,16 +117,16 @@ class Ui_MainWindow(object):
         self.timer_time.setSmallDecimalPoint(False)
         self.timer_time.setDigitCount(8)
         self.timer_time.setSegmentStyle(QLCDNumber.Flat)
-        self.timer_button = QPushButton(self.page_timer)
-        self.timer_button.setObjectName(u"timer_button")
-        self.timer_button.setGeometry(QRect(490, 60, 141, 41))
+        self.startButton = QPushButton(self.page_timer)
+        self.startButton.setObjectName(u"startButton")
+        self.startButton.setGeometry(QRect(490, 50, 141, 41))
         font1 = QFont()
         font1.setFamilies([u"URW Gothic"])
         font1.setPointSize(11)
         font1.setBold(True)
         font1.setItalic(False)
-        self.timer_button.setFont(font1)
-        self.timer_button.setStyleSheet(u"QPushButton {\n"
+        self.startButton.setFont(font1)
+        self.startButton.setStyleSheet(u"QPushButton {\n"
 "	color: rgb(220, 138, 221);\n"
 "	font: 600 11pt \"URW Gothic\";\n"
 "    background-color: white; /* White background */\n"
@@ -203,6 +203,87 @@ class Ui_MainWindow(object):
         self.increaseSec.setCheckable(False)
         self.increaseSec.setAutoDefault(False)
         self.increaseSec.setFlat(True)
+        self.decreaseSec = QPushButton(self.page_timer)
+        self.decreaseSec.setObjectName(u"decreaseSec")
+        self.decreaseSec.setGeometry(QRect(375, 125, 21, 26))
+        self.decreaseSec.setStyleSheet(u"QPushButton {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"    border: none;                /* No border */\n"
+"}\n"
+"QPushButton:pressed {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"   /* Same background color when pressed */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(191, 64, 64, 0); /* Optional hover color */\n"
+"}\n"
+"QPushButton:focus {\n"
+"    outline: none;               /* No focus outline */\n"
+"}\n"
+"")
+        self.decreaseSec.setCheckable(False)
+        self.decreaseSec.setAutoDefault(False)
+        self.decreaseSec.setFlat(True)
+        self.decreaseHour = QPushButton(self.page_timer)
+        self.decreaseHour.setObjectName(u"decreaseHour")
+        self.decreaseHour.setGeometry(QRect(150, 125, 21, 26))
+        self.decreaseHour.setStyleSheet(u"QPushButton {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"    border: none;                /* No border */\n"
+"}\n"
+"QPushButton:pressed {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"   /* Same background color when pressed */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(191, 64, 64, 0); /* Optional hover color */\n"
+"}\n"
+"QPushButton:focus {\n"
+"    outline: none;               /* No focus outline */\n"
+"}\n"
+"")
+        self.decreaseHour.setCheckable(False)
+        self.decreaseHour.setAutoDefault(False)
+        self.decreaseHour.setFlat(True)
+        self.decreaseMin = QPushButton(self.page_timer)
+        self.decreaseMin.setObjectName(u"decreaseMin")
+        self.decreaseMin.setGeometry(QRect(265, 125, 21, 26))
+        self.decreaseMin.setStyleSheet(u"QPushButton {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"    border: none;                /* No border */\n"
+"}\n"
+"QPushButton:pressed {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"   /* Same background color when pressed */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(191, 64, 64, 0); /* Optional hover color */\n"
+"}\n"
+"QPushButton:focus {\n"
+"    outline: none;               /* No focus outline */\n"
+"}\n"
+"")
+        self.decreaseMin.setCheckable(False)
+        self.decreaseMin.setAutoDefault(False)
+        self.decreaseMin.setFlat(True)
+        self.stopButton = QPushButton(self.page_timer)
+        self.stopButton.setObjectName(u"stopButton")
+        self.stopButton.setGeometry(QRect(490, 100, 141, 41))
+        self.stopButton.setFont(font1)
+        self.stopButton.setStyleSheet(u"QPushButton {\n"
+"	color: rgb(220, 138, 221);\n"
+"	font: 600 11pt \"URW Gothic\";\n"
+"    background-color: white; /* White background */\n"
+"    color: #555; /* Dark text */\n"
+"    border: 2px solid #555; /* Dark border */\n"
+"    padding: 10px 20px;\n"
+"    border-radius: 5px; /* Rounded corners */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: #ff4d4d; /* Dark background on hover */\n"
+"    color: white; /* White text on hover */\n"
+"}\n"
+"")
         self.stackedWidget.addWidget(self.page_timer)
 
         self.verticalLayout.addWidget(self.stackedWidget)
@@ -277,6 +358,9 @@ class Ui_MainWindow(object):
         self.increaseHour.setDefault(False)
         self.increaseMin.setDefault(False)
         self.increaseSec.setDefault(False)
+        self.decreaseSec.setDefault(False)
+        self.decreaseHour.setDefault(False)
+        self.decreaseMin.setDefault(False)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -284,10 +368,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DogeClock", None))
-        self.timer_button.setText(QCoreApplication.translate("MainWindow", u"Start", None))
-        self.increaseHour.setText(QCoreApplication.translate("MainWindow", u"   \u20e4", None))
-        self.increaseMin.setText(QCoreApplication.translate("MainWindow", u"   \u20e4", None))
-        self.increaseSec.setText(QCoreApplication.translate("MainWindow", u"   \u20e4", None))
+        self.startButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.increaseHour.setText(QCoreApplication.translate("MainWindow", u"\u25b2", None))
+        self.increaseMin.setText(QCoreApplication.translate("MainWindow", u"\u25b2", None))
+        self.increaseSec.setText(QCoreApplication.translate("MainWindow", u"\u25b2", None))
+        self.decreaseSec.setText(QCoreApplication.translate("MainWindow", u"\u25bc", None))
+        self.decreaseHour.setText(QCoreApplication.translate("MainWindow", u"\u25bc", None))
+        self.decreaseMin.setText(QCoreApplication.translate("MainWindow", u"\u25bc", None))
+        self.stopButton.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
         self.clock.setText(QCoreApplication.translate("MainWindow", u"Clock", None))
         self.timer.setText(QCoreApplication.translate("MainWindow", u"Timer", None))
         self.stopwatch.setText(QCoreApplication.translate("MainWindow", u"Stopwatch", None))
