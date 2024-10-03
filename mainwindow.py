@@ -1,12 +1,11 @@
 # This Python file uses the following encoding: utf-8
 import sys
 
-from PySide6.QtGui import QKeyEvent
+from PySide6.QtGui import QKeyEvent, QPainter, QPolygon
 from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout, QLabel, QPushButton
-from PySide6.QtCore import QTimer
+from PySide6.QtCore import QTimer, Qt, QPoint
 from datetime import datetime
 from ui_form import Ui_MainWindow
-
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -33,12 +32,20 @@ class MainWindow(QMainWindow):
         self.ui.timer_time.display("00:00:00")
 
         #Switch to timer interface when the timer button is clicked.
+        self.hour = 0
+        self.min = 0
+        self.sec = 0
+        self.total_time = 0
         self.ui.timer.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
-        self.ui.timer_button.clicked.connect(self.set_timer_start)
+        self.ui.increaseHour.clicked.connect(self.increase_hour)
+        self.ui.increaseMin.clicked.connect(self.increase_min)
+        self.ui.increaseSec.clicked.connect(self.increase_sec)
+        self.ui.timer_button.clicked.connect(self.update_countdown)
 
         #Initialize a timer. It will take an amount of time to wait for,  as input from user.
         self.countdown_timer = QTimer()
-        self.countdown_timer.timeout.connect(self.time_scale)
+        #Function to scale time
+        self.countdown_timer.timeout.connect(self.decrease_time)
 
 #--------------------------------------------------------------------------------------------------#
 #                                         CLOCK FUNCTIONS                                          #
@@ -52,32 +59,39 @@ class MainWindow(QMainWindow):
 #                                          TIMER FUNCTIONS                                           #
 #----------------------------------------------------------------------------------------------------#
 
-
-    #Function to set starting time of timer from spinboxes to lcd display.
-    def set_timer_start(self):
-        hour = self.ui.boxHour.value()
-        min = self.ui.boxMin.value()
-        sec = self.ui.boxSec.value()
-
-        self.remaining_time = (hour * 3600) + (min * 60) + sec
-
-        formatted_time = f"{hour:02}:{min:02}:{sec:02}"
+    def increase_hour(self):
+        self.hour += 1
+        formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
-        if self.remaining_time > 0:
-            self.countdown_timer.start(1000)
-
-    #Function that decreases the time until it reaches 0. It also format the time so display it on the lcd. 
-    def time_scale(self):
-        if self.remaining_time > 0:
-            self.remaining_time -= 1
-        hours = self.remaining_time // 3600
-        minutes = (self.remaining_time % 3600) // 60
-        sec = (self.remaining_time % 60)
-
-        formatted_time = f"{hours:02}:{minutes:02}:{sec:02}"
+    def increase_min(self):
+        self.min += 1
+        formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
+    def increase_sec(self):
+        self.sec += 1
+        formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
+        self.ui.timer_time.display(formatted_time)
+
+    def update_countdown(self):
+        self.total_time = (self.hour * 3600) + (self.min * 60) + self.sec
+        if self.total_time > 0:
+            self.countdown_timer.start(1000)  # Start the countdown timer
+        else:
+            self.ui.timer_time.display("00:00:00")
+
+    def decrease_time(self):
+        if self.total_time > 0:
+            self.total_time -= 1
+            hours = self.total_time // 3600
+            minutes = (self.total_time % 3600) // 60
+            seconds = self.total_time % 60
+            formatted_time = f"{hours:02}:{minutes:02}:{seconds:02}"  # Use updated values
+            self.ui.timer_time.display(formatted_time)
+        else:
+            self.countdown_timer.stop()
+            self.ui.timer_time.display("00:00:00")  # Show 00:00:00 when finished
 #----------------------------------------------------------------------------------------------------#
 
  

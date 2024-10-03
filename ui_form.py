@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLCDNumber,
-    QMainWindow, QPushButton, QSizePolicy, QSpinBox,
-    QStackedWidget, QVBoxLayout, QWidget)
+    QMainWindow, QPushButton, QSizePolicy, QStackedWidget,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -82,9 +82,9 @@ class Ui_MainWindow(object):
         self.clock_time.setDigitCount(8)
         self.clock_time.setSegmentStyle(QLCDNumber.Flat)
         self.stackedWidget.addWidget(self.page_clock)
-        self.page_timer = QWidget()
-        self.page_timer.setObjectName(u"page_timer")
-        self.stopwatch_time = QLCDNumber(self.page_timer)
+        self.page_stopwatch = QWidget()
+        self.page_stopwatch.setObjectName(u"page_stopwatch")
+        self.stopwatch_time = QLCDNumber(self.page_stopwatch)
         self.stopwatch_time.setObjectName(u"stopwatch_time")
         self.stopwatch_time.setGeometry(QRect(10, 60, 700, 91))
         sizePolicy.setHeightForWidth(self.stopwatch_time.sizePolicy().hasHeightForWidth())
@@ -99,12 +99,12 @@ class Ui_MainWindow(object):
         self.stopwatch_time.setSmallDecimalPoint(False)
         self.stopwatch_time.setDigitCount(8)
         self.stopwatch_time.setSegmentStyle(QLCDNumber.Flat)
-        self.stackedWidget.addWidget(self.page_timer)
-        self.page_Stopwatch = QWidget()
-        self.page_Stopwatch.setObjectName(u"page_Stopwatch")
-        self.timer_time = QLCDNumber(self.page_Stopwatch)
+        self.stackedWidget.addWidget(self.page_stopwatch)
+        self.page_timer = QWidget()
+        self.page_timer.setObjectName(u"page_timer")
+        self.timer_time = QLCDNumber(self.page_timer)
         self.timer_time.setObjectName(u"timer_time")
-        self.timer_time.setGeometry(QRect(120, 70, 311, 81))
+        self.timer_time.setGeometry(QRect(120, 50, 311, 81))
         sizePolicy.setHeightForWidth(self.timer_time.sizePolicy().hasHeightForWidth())
         self.timer_time.setSizePolicy(sizePolicy)
         self.timer_time.setMinimumSize(QSize(300, 0))
@@ -117,34 +117,15 @@ class Ui_MainWindow(object):
         self.timer_time.setSmallDecimalPoint(False)
         self.timer_time.setDigitCount(8)
         self.timer_time.setSegmentStyle(QLCDNumber.Flat)
-        self.boxSec = QSpinBox(self.page_Stopwatch)
-        self.boxSec.setObjectName(u"boxSec")
-        self.boxSec.setGeometry(QRect(340, 20, 91, 27))
-        font1 = QFont()
-        font1.setFamilies([u"URW Gothic"])
-        font1.setBold(True)
-        self.boxSec.setFont(font1)
-        self.boxSec.setWrapping(False)
-        self.boxSec.setMaximum(59)
-        self.boxHour = QSpinBox(self.page_Stopwatch)
-        self.boxHour.setObjectName(u"boxHour")
-        self.boxHour.setGeometry(QRect(120, 20, 91, 27))
-        self.boxHour.setFont(font1)
-        self.boxHour.setMaximum(23)
-        self.boxMin = QSpinBox(self.page_Stopwatch)
-        self.boxMin.setObjectName(u"boxMin")
-        self.boxMin.setGeometry(QRect(230, 20, 91, 27))
-        self.boxMin.setFont(font1)
-        self.boxMin.setMaximum(59)
-        self.timer_button = QPushButton(self.page_Stopwatch)
+        self.timer_button = QPushButton(self.page_timer)
         self.timer_button.setObjectName(u"timer_button")
         self.timer_button.setGeometry(QRect(490, 60, 141, 41))
-        font2 = QFont()
-        font2.setFamilies([u"URW Gothic"])
-        font2.setPointSize(11)
-        font2.setBold(True)
-        font2.setItalic(False)
-        self.timer_button.setFont(font2)
+        font1 = QFont()
+        font1.setFamilies([u"URW Gothic"])
+        font1.setPointSize(11)
+        font1.setBold(True)
+        font1.setItalic(False)
+        self.timer_button.setFont(font1)
         self.timer_button.setStyleSheet(u"QPushButton {\n"
 "	color: rgb(220, 138, 221);\n"
 "	font: 600 11pt \"URW Gothic\";\n"
@@ -159,7 +140,70 @@ class Ui_MainWindow(object):
 "    color: white; /* White text on hover */\n"
 "}\n"
 "")
-        self.stackedWidget.addWidget(self.page_Stopwatch)
+        self.increaseHour = QPushButton(self.page_timer)
+        self.increaseHour.setObjectName(u"increaseHour")
+        self.increaseHour.setGeometry(QRect(150, 30, 21, 26))
+        self.increaseHour.setStyleSheet(u"QPushButton {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"    border: none;                /* No border */\n"
+"}\n"
+"QPushButton:pressed {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"   /* Same background color when pressed */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(191, 64, 64, 0); /* Optional hover color */\n"
+"}\n"
+"QPushButton:focus {\n"
+"    outline: none;               /* No focus outline */\n"
+"}\n"
+"")
+        self.increaseHour.setCheckable(False)
+        self.increaseHour.setAutoDefault(False)
+        self.increaseHour.setFlat(True)
+        self.increaseMin = QPushButton(self.page_timer)
+        self.increaseMin.setObjectName(u"increaseMin")
+        self.increaseMin.setGeometry(QRect(265, 30, 21, 26))
+        self.increaseMin.setStyleSheet(u"QPushButton {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"    border: none;                /* No border */\n"
+"}\n"
+"QPushButton:pressed {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"   /* Same background color when pressed */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(191, 64, 64, 0); /* Optional hover color */\n"
+"}\n"
+"QPushButton:focus {\n"
+"    outline: none;               /* No focus outline */\n"
+"}\n"
+"")
+        self.increaseMin.setCheckable(False)
+        self.increaseMin.setAutoDefault(False)
+        self.increaseMin.setFlat(True)
+        self.increaseSec = QPushButton(self.page_timer)
+        self.increaseSec.setObjectName(u"increaseSec")
+        self.increaseSec.setGeometry(QRect(375, 30, 21, 26))
+        self.increaseSec.setStyleSheet(u"QPushButton {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"    border: none;                /* No border */\n"
+"}\n"
+"QPushButton:pressed {\n"
+"	background-color: rgba(191, 64, 64, 0);\n"
+"   /* Same background color when pressed */\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(191, 64, 64, 0); /* Optional hover color */\n"
+"}\n"
+"QPushButton:focus {\n"
+"    outline: none;               /* No focus outline */\n"
+"}\n"
+"")
+        self.increaseSec.setCheckable(False)
+        self.increaseSec.setAutoDefault(False)
+        self.increaseSec.setFlat(True)
+        self.stackedWidget.addWidget(self.page_timer)
 
         self.verticalLayout.addWidget(self.stackedWidget)
 
@@ -230,6 +274,9 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.stackedWidget.setCurrentIndex(2)
+        self.increaseHour.setDefault(False)
+        self.increaseMin.setDefault(False)
+        self.increaseSec.setDefault(False)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -238,6 +285,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DogeClock", None))
         self.timer_button.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.increaseHour.setText(QCoreApplication.translate("MainWindow", u"   \u20e4", None))
+        self.increaseMin.setText(QCoreApplication.translate("MainWindow", u"   \u20e4", None))
+        self.increaseSec.setText(QCoreApplication.translate("MainWindow", u"   \u20e4", None))
         self.clock.setText(QCoreApplication.translate("MainWindow", u"Clock", None))
         self.timer.setText(QCoreApplication.translate("MainWindow", u"Timer", None))
         self.stopwatch.setText(QCoreApplication.translate("MainWindow", u"Stopwatch", None))
