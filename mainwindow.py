@@ -31,24 +31,30 @@ class MainWindow(QMainWindow):
         #Set initial timer  display time
         self.ui.timer_time.display("00:00:00")
 
-        #Switch to timer interface when the timer button is clicked.
+        #Declearing time variables
         self.hour = 0
         self.min = 0
         self.sec = 0
         self.total_time = 0
+    
+        #Switch to timer interface when the timer button is clicked.
         self.ui.timer.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(2))
+
+        #Decrease/Increase time buttons
         self.ui.increaseHour.clicked.connect(self.increase_hour)
         self.ui.increaseMin.clicked.connect(self.increase_min)
         self.ui.increaseSec.clicked.connect(self.increase_sec)
         self.ui.decreaseHour.clicked.connect(self.decrease_hour)
         self.ui.decreaseMin.clicked.connect(self.decrease_min)
         self.ui.decreaseSec.clicked.connect(self.decrease_sec)
+
+        #Start and stop timer buttons
         self.ui.startButton.clicked.connect(self.update_countdown)
         self.ui.stopButton.clicked.connect(lambda: self.countdown_timer.stop())
 
         #Initialize a timer. It will take an amount of time to wait for,  as input from user.
         self.countdown_timer = QTimer()
-        #Function to scale time
+        #Eachtime a second expires the timeout signal will be emitted and the  slot function will be called
         self.countdown_timer.timeout.connect(self.decrease_time)
 
 #--------------------------------------------------------------------------------------------------#
@@ -63,6 +69,7 @@ class MainWindow(QMainWindow):
 #                                          TIMER FUNCTIONS                                           #
 #----------------------------------------------------------------------------------------------------#
 
+    #Function linked to button to increase hours
     def increase_hour(self):
         self.hour += 1
         if self.hour > 23:
@@ -71,6 +78,7 @@ class MainWindow(QMainWindow):
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
+    #Function linked to button to increase mins
     def increase_min(self):
         self.min += 1
         if self.min > 59:
@@ -82,6 +90,7 @@ class MainWindow(QMainWindow):
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
+    #Function linked to button to increase secs
     def increase_sec(self):
         self.sec += 1
         if self.sec > 59:
@@ -92,7 +101,8 @@ class MainWindow(QMainWindow):
         self.countdown_timer.stop()
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
-    
+
+    #Function linked to button to decrease hours
     def decrease_hour(self):
         self.hour -= 1
         if self.hour < 0:
@@ -101,6 +111,7 @@ class MainWindow(QMainWindow):
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
+    #Function linked to button to decrease mins
     def decrease_min(self):
         self.min -= 1
         if self.min < 0:
@@ -112,6 +123,7 @@ class MainWindow(QMainWindow):
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
+    #Function linked to button to decrease secs
     def decrease_sec(self):
         self.sec -= 1
         if self.sec < 0:
@@ -120,24 +132,27 @@ class MainWindow(QMainWindow):
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
         self.ui.timer_time.display(formatted_time)
 
+    #Function to calculate total seconds and start timer.
     def update_countdown(self):
         self.total_time = (self.hour * 3600) + (self.min * 60) + self.sec
         if self.total_time > 0:
-            self.countdown_timer.start(1000)  # Start the countdown timer
+            self.countdown_timer.start(1000)
         else:
             self.ui.timer_time.display("00:00:00")
 
+    #Function that decreases the amount of time until it reaches 0. 
+    #It also shows the time in a formatted manner.
     def decrease_time(self):
         if self.total_time > 0:
             self.total_time -= 1
             hours = self.total_time // 3600
             minutes = (self.total_time % 3600) // 60
             seconds = self.total_time % 60
-            formatted_time = f"{hours:02}:{minutes:02}:{seconds:02}"  # Use updated values
+            formatted_time = f"{hours:02}:{minutes:02}:{seconds:02}"
             self.ui.timer_time.display(formatted_time)
         else:
             self.countdown_timer.stop()
-            self.ui.timer_time.display("00:00:00")  # Show 00:00:00 when finished
+            self.ui.timer_time.display("00:00:00") 
 #----------------------------------------------------------------------------------------------------#
 
  
