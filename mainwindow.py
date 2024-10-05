@@ -62,28 +62,18 @@ class MainWindow(QMainWindow):
 #--------------------------------------------------------------------------------------------------#
 #                                        STOPWATCH SETUP                                           #
 #--------------------------------------------------------------------------------------------------#
-        
-        #Stopwatch button to switch interface
-        self.ui.stopwatch.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
-        self.ui.stop.clicked.connect(self.stop_stopwatch)
-        self.ui.resume.clicked.connect(self.resume_stopwatch)
-        self.ui.reset.clicked.connect(self.reset_stopwatch)
-    
-        #
-        self.stopwatch_timer = QTimer()
-        self.stopwatch_timer.timeout.connect(self.start_stopwatch)
-        self.stopwatch_time = 0
-        self.stopwatch_time_hour = 0
-        self.stopwatch_time_min = 0
-        self.stopwatch_time_sec = 0
-        self.stopwatch_time_millisec = 0
-        self.time_stopped = 0
+        #Variables
+        self.is_running = False
+        self.has_stopped = False
         self.resetted = False
-        self.pause = False
+        #Stopwatch button to switch interface
+        self.stopwatch_timer = QTimer()
+        self.ui.stopwatch.clicked.connect(lambda: self.ui.stackedWidget.setCurrentIndex(1))
+        self.ui.start_stop.clicked.connect(self.start_stop_stopwatch)
+        self.ui.reset.clicked.connect(self.reset_stopwatch)
+        self.stopwatch_timer.timeout.connect(self.start_stop_stopwatch)
         self.ui.stopwatch_time.display("00:00:00:000")
-        self.start_stopwatch()
-
-
+    
 #--------------------------------------------------------------------------------------------------#
 #                                         CLOCK FUNCTIONS                                          #
 #--------------------------------------------------------------------------------------------------#
@@ -143,8 +133,7 @@ class MainWindow(QMainWindow):
         self.min -= 1
         if self.min < 0:
             self.min = 59
-            self.hour -= 1
-            if self.hour < 0:
+            if self.hour < 0: 
                 self.hour = 23
         self.countdown_timer.stop()
         formatted_time = f"{self.hour:02}:{self.min:02}:{self.sec:02}"
@@ -191,42 +180,59 @@ class MainWindow(QMainWindow):
 #                                           STOPWATCH FUNCTIONS                                      #
 #----------------------------------------------------------------------------------------------------#
 
-    def get_stopped_time(self):
-        self.time_stopped = time.time()
-        self.elapsed_before_stop = self.time_stopped - self.start_time
+    def start_stop_stopwatch(self):
+        #Set buttot text
+        self.ui.start_stop.setText("⏸️")
 
-    def start_stopwatch(self):
-        #Set starting time
+        #Disconnect any existing connections
+        self.ui.start_stop.clicked.disconnect()
+
+        #If button is clicked again stop time.
+        self.ui.start_stop.clicked.connect(self.stop_stopwatch)
+        
+        #Stopwatch time handling
         if not hasattr(self, 'start_time'):
             self.start_time = time.time()
         self.stopwatch_timer.start(1)
+
         elapsed_time = time.time() - self.start_time
+
+        if self.has_stopped == True:
+            if self.resetted == True:
+                self.start_time = time.time()
+                self.resetted = False
+            else:
+                self.start_time += time.time() - self.time_stopped
+            self.has_stopped = False
+
         self.stopwatch_time_hour = int(elapsed_time // 3600)
         self.stopwatch_time_min = int((elapsed_time % 3600) // 60)
         self.stopwatch_time_sec = int(elapsed_time % 60)
         self.stopwatch_time_millisec = int((elapsed_time * 1000) % 1000)
         self.time_to_display = f"{self.stopwatch_time_hour:02}:{self.stopwatch_time_min:02}:{self.stopwatch_time_sec:02}:{self.stopwatch_time_millisec:03}"
         self.ui.stopwatch_time.display(self.time_to_display)
-        self.ui.stop.clicked.connect(self.get_stopped_time)
-
+        
     def stop_stopwatch(self):
+
+        self.has_stopped = True
+        if self.has_stopped == True:
+            self.time_stopped = time.time()
+            
+        #Set button text
+        self.ui.start_stop.setText("▶️")
+
+        self.ui.start_stop.clicked.disconnect()
+
         self.stopwatch_timer.stop()
-
-    def resume_stopwatch(self):
-        if self.resetted == False:
-            self.start_time = time.time() - self.elapsed_before_stop
-        else:
-            self.start_time = time.time()
-            self.resetted = False
-        self.stopwatch_timer.start(1)
-
+        #If button is clicked again star time.
+        self.ui.start_stop.clicked.connect(self.start_stop_stopwatch)
 
     def reset_stopwatch(self):
-        if self.resetted == False:
-            self.resetted = True
-        self.stopwatch_timer.stop()
         self.ui.stopwatch_time.display("00:00:00:000")
- 
+        self.start_time = time.time()
+        self.resetted = True 
+
+#----------------------------------------------------------------------------------------------------# 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = MainWindow()

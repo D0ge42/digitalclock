@@ -24,8 +24,10 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(714, 256)
+        MainWindow.setMinimumSize(QSize(714, 256))
+        MainWindow.setMaximumSize(QSize(714, 256))
         palette = QPalette()
-        brush = QBrush(QColor(61, 56, 70, 255))
+        brush = QBrush(QColor(0, 0, 0, 255))
         brush.setStyle(Qt.SolidPattern)
         palette.setBrush(QPalette.Active, QPalette.Button, brush)
         palette.setBrush(QPalette.Active, QPalette.Base, brush)
@@ -45,7 +47,7 @@ class Ui_MainWindow(object):
             icon.addFile(u"untitled1", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
 
         MainWindow.setWindowIcon(icon)
-        MainWindow.setStyleSheet(u"background-color: rgb(61, 56, 70);")
+        MainWindow.setStyleSheet(u"background-color: black;")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"")
@@ -61,7 +63,7 @@ class Ui_MainWindow(object):
         self.page_clock.setObjectName(u"page_clock")
         self.clock_time = QLCDNumber(self.page_clock)
         self.clock_time.setObjectName(u"clock_time")
-        self.clock_time.setGeometry(QRect(-10, 10, 651, 151))
+        self.clock_time.setGeometry(QRect(20, 10, 651, 151))
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -99,30 +101,13 @@ class Ui_MainWindow(object):
         self.stopwatch_time.setSmallDecimalPoint(False)
         self.stopwatch_time.setDigitCount(13)
         self.stopwatch_time.setSegmentStyle(QLCDNumber.Flat)
-        self.stop = QPushButton(self.page_stopwatch)
-        self.stop.setObjectName(u"stop")
-        self.stop.setGeometry(QRect(290, 10, 101, 41))
-        self.stop.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.stop.setStyleSheet(u"QPushButton {\n"
+        self.start_stop = QPushButton(self.page_stopwatch)
+        self.start_stop.setObjectName(u"start_stop")
+        self.start_stop.setGeometry(QRect(350, 10, 101, 41))
+        self.start_stop.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.start_stop.setStyleSheet(u"QPushButton {\n"
 "	font: 600 11pt \"URW Gothic\";\n"
-"    background-color: white; /* White background */\n"
-"    color: #555; /* Dark text */\n"
-"    border: 2px solid #555; /* Dark border */\n"
-"    padding: 10px 20px;\n"
-"    border-radius: 5px; /* Rounded corners */\n"
-"}\n"
-"QPushButton:hover {\n"
-"    background-color: #555; /* Dark background on hover */\n"
-"    color: white; /* White text on hover */\n"
-"}\n"
-"")
-        self.resume = QPushButton(self.page_stopwatch)
-        self.resume.setObjectName(u"resume")
-        self.resume.setGeometry(QRect(430, 10, 101, 41))
-        self.resume.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.resume.setStyleSheet(u"QPushButton {\n"
-"	font: 600 11pt \"URW Gothic\";\n"
-"    background-color: white; /* White background */\n"
+"    background-color: #faee02; /* White background */\n"
 "    color: #555; /* Dark text */\n"
 "    border: 2px solid #555; /* Dark border */\n"
 "    padding: 10px 20px;\n"
@@ -135,11 +120,11 @@ class Ui_MainWindow(object):
 "")
         self.reset = QPushButton(self.page_stopwatch)
         self.reset.setObjectName(u"reset")
-        self.reset.setGeometry(QRect(130, 10, 101, 41))
+        self.reset.setGeometry(QRect(210, 10, 101, 41))
         self.reset.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.reset.setStyleSheet(u"QPushButton {\n"
 "	font: 600 11pt \"URW Gothic\";\n"
-"    background-color: white; /* White background */\n"
+"    background-color: #faee02;  /* White background */\n"
 "    color: #555; /* Dark text */\n"
 "    border: 2px solid #555; /* Dark border */\n"
 "    padding: 10px 20px;\n"
@@ -197,6 +182,7 @@ class Ui_MainWindow(object):
         self.increaseHour.setGeometry(QRect(150, 30, 21, 26))
         self.increaseHour.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.increaseHour.setStyleSheet(u"QPushButton {\n"
+"	color: #faee02;\n"
 "	background-color: rgba(191, 64, 64, 0);\n"
 "    border: none;                /* No border */\n"
 "}\n"
@@ -219,6 +205,7 @@ class Ui_MainWindow(object):
         self.increaseMin.setGeometry(QRect(265, 30, 21, 26))
         self.increaseMin.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.increaseMin.setStyleSheet(u"QPushButton {\n"
+"	color: #faee02;\n"
 "	background-color: rgba(191, 64, 64, 0);\n"
 "    border: none;                /* No border */\n"
 "}\n"
@@ -241,6 +228,7 @@ class Ui_MainWindow(object):
         self.increaseSec.setGeometry(QRect(375, 30, 21, 26))
         self.increaseSec.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.increaseSec.setStyleSheet(u"QPushButton {\n"
+"	color: #faee02;\n"
 "	background-color: rgba(191, 64, 64, 0);\n"
 "    border: none;                /* No border */\n"
 "}\n"
@@ -263,6 +251,7 @@ class Ui_MainWindow(object):
         self.decreaseSec.setGeometry(QRect(375, 125, 21, 26))
         self.decreaseSec.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.decreaseSec.setStyleSheet(u"QPushButton {\n"
+"	color: #faee02;\n"
 "	background-color: rgba(191, 64, 64, 0);\n"
 "    border: none;                /* No border */\n"
 "}\n"
@@ -285,6 +274,7 @@ class Ui_MainWindow(object):
         self.decreaseHour.setGeometry(QRect(150, 125, 21, 26))
         self.decreaseHour.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.decreaseHour.setStyleSheet(u"QPushButton {\n"
+"	color: #faee02;\n"
 "	background-color: rgba(191, 64, 64, 0);\n"
 "    border: none;                /* No border */\n"
 "}\n"
@@ -307,6 +297,7 @@ class Ui_MainWindow(object):
         self.decreaseMin.setGeometry(QRect(265, 125, 21, 26))
         self.decreaseMin.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.decreaseMin.setStyleSheet(u"QPushButton {\n"
+"	color: #faee02;\n"
 "	background-color: rgba(191, 64, 64, 0);\n"
 "    border: none;                /* No border */\n"
 "}\n"
@@ -375,8 +366,8 @@ class Ui_MainWindow(object):
         self.clock.setStyleSheet(u"QPushButton {\n"
 "	color: rgb(220, 138, 221);\n"
 "	font: 600 11pt \"URW Gothic\";\n"
-"    background-color: white; /* White background */\n"
-"    color: #555; /* Dark text */\n"
+"    background-color: #822dcc; /* White background */\n"
+"    color: white; /* Dark text */\n"
 "    border: 2px solid #555; /* Dark border */\n"
 "    padding: 10px 20px;\n"
 "    border-radius: 5px; /* Rounded corners */\n"
@@ -394,8 +385,8 @@ class Ui_MainWindow(object):
         self.timer.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.timer.setStyleSheet(u"QPushButton {\n"
 "	font: 600 11pt \"URW Gothic\";\n"
-"    background-color: white; /* White background */\n"
-"    color: #555; /* Dark text */\n"
+"    background-color: #822dcc; /* White background */\n"
+"    color: white; /* Dark text */\n"
 "    border: 2px solid #555; /* Dark border */\n"
 "    padding: 10px 20px;\n"
 "    border-radius: 5px; /* Rounded corners */\n"
@@ -414,8 +405,8 @@ class Ui_MainWindow(object):
         self.stopwatch.setStyleSheet(u"QPushButton {\n"
 "	color: rgb(220, 138, 221);\n"
 "	font: 600 11pt \"URW Gothic\";\n"
-"    background-color: white; /* White background */\n"
-"    color: #555; /* Dark text */\n"
+"    background-color: #822dcc; /* White background */\n"
+"    color: white; /* Dark text */\n"
 "    border: 2px solid #555; /* Dark border */\n"
 "    padding: 10px 20px;\n"
 "    border-radius: 5px; /* Rounded corners */\n"
@@ -435,7 +426,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         self.increaseHour.setDefault(False)
         self.increaseMin.setDefault(False)
         self.increaseSec.setDefault(False)
@@ -449,8 +440,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"DogeClock", None))
-        self.stop.setText(QCoreApplication.translate("MainWindow", u"\u23f8\ufe0f", None))
-        self.resume.setText(QCoreApplication.translate("MainWindow", u"\u25b6\ufe0f", None))
+        self.start_stop.setText(QCoreApplication.translate("MainWindow", u"\u25b6\ufe0f", None))
         self.reset.setText(QCoreApplication.translate("MainWindow", u"\u25c0\ufe0f", None))
         self.startButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
         self.increaseHour.setText(QCoreApplication.translate("MainWindow", u"\u25b2", None))
